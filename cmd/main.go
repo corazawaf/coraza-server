@@ -14,4 +14,21 @@
 
 package main
 
-func main() {}
+import (
+	"flag"
+	"github.com/corazawaf/coraza-server/config"
+	"github.com/corazawaf/coraza-server/pkg/logger"
+)
+
+func main() {
+	defer func() {
+		if err := logger.Sync(); err != nil {
+			_ = err
+		}
+	}()
+
+	flag.Parse()
+	if err := config.InitConfig(); err != nil {
+		panic(err)
+	}
+}

@@ -42,6 +42,14 @@ const (
 	FatalLevel = zapcore.FatalLevel
 )
 
+// ParseLevel parses a level based on the lower-case or all-caps ASCII
+// representation of the log level. If the provided ASCII representation is
+// invalid an error is returned.
+//
+// This is particularly useful when dealing with text input to configure log
+// levels.
+var ParseLevel = zapcore.ParseLevel
+
 // Field is an alias for Field. Aliasing this type dramatically
 // improves the navigability of this package's API documentation.
 type Field = zap.Field

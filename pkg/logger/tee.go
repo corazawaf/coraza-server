@@ -39,8 +39,8 @@ type TeeOption struct {
 	Lef      LevelEnablerFunc
 }
 
-// NewTee creates a new tee logger that contains multiple loggers with the rotation of the log function.
-func NewTee(tops []TeeOption, opts ...Option) *Logger {
+// NewTeeWithRotate creates a new tee logger that contains multiple loggers with the rotation of the log function.
+func NewTeeWithRotate(tops []TeeOption, opts ...Option) *Logger {
 	var cores []zapcore.Core
 	cfg := zap.NewProductionConfig()
 	cfg.EncoderConfig.EncodeTime = func(t time.Time, encoder zapcore.PrimitiveArrayEncoder) {

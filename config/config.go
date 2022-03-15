@@ -16,6 +16,8 @@ package config
 
 import (
 	"flag"
+	"fmt"
+	"github.com/corazawaf/coraza-server/pkg/logger"
 	"gopkg.in/yaml.v3"
 	"os"
 )
@@ -54,5 +56,44 @@ func InitConfig() error {
 		return err
 	}
 
+	// set the log configuration
+	initLog()
+
 	return nil
+}
+
+func initLog() {
+	var tops = []logger.TeeOption{
+		{
+			Filename: fmt.Sprintf("%s/server.log", C.Log.Dir),
+			ROpts: logger.RotateOptions{
+				MaxSize:    128,
+				MaxAge:     7,
+				MaxBackups: 30,
+				Compress:   true,
+			},
+			Lef: func(level logger.Level) bool {
+				l, err := logger.ParseLevel(C.Log.Level)
+				if err != nil {
+					panic(err)
+				}
+				return level >= l && level < logger.ErrorLevel
+			},
+		},
+		{
+			Filename: fmt.Sprintf("%s/error.log", C.Log.Dir),
+			ROpts: logger.RotateOptions{
+				MaxSize:    128,
+				MaxAge:     7,
+				MaxBackups: 30,
+				Compress:   true,
+			},
+			Lef: func(level logger.Level) bool {
+				return level >= logger.ErrorLevel
+			},
+		},
+	}
+
+	// reset default logger for using global logger
+	logger.NewTeeWithRotate(tops).Reset()
 }

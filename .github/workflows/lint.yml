@@ -1,0 +1,25 @@
+name: lint (pre-commit)
+
+on:
+  pull_request:
+    branches: [*]
+  push:
+    branches: [*]
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: v1.17.x
+
+      - name: Install dependencies
+        run: |
+
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v2
+      - uses: pre-commit/action@v2.0.3
+        with:
+          extra_args: --all-files
